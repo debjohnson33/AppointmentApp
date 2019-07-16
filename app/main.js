@@ -18,9 +18,6 @@ app.on('ready', function() {
 
     appWindow.once('ready-to-show', function () {
         appWindow.show();
-        setTimeout(function() {
-            infoWindow.show();
-        }, 1000)
     });
 
     ipc.on('closeInfoWindow', function(event) {
