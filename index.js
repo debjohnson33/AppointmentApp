@@ -1,6 +1,7 @@
 var electron = require('electron');
 var BrowserWindow = electron.BrowserWindow;
 var app = electron.app;
+var ipc = electron.ipcMain;
 
 app.on('ready', function() {
     var appWindow, infoWindow;
@@ -19,8 +20,11 @@ app.on('ready', function() {
         appWindow.show();
         setTimeout(function() {
             infoWindow.show();
-            setTimeout(function() {infoWindow.hide();}, 3000);
         }, 1000)
-        
+    });
+
+    ipc.on('closeInfoWindow', function(event) {
+        event.returnValue = '';
+        infoWindow.hide();
     });
 });

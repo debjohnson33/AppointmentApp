@@ -6,6 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Johnson Pet Medicine</title>
     <link rel="stylesheet" href="app.css">
+    <script>
+        var electron = require('electron');
+        var shell = electron.shell;
+        var ipc = electron.ipcRenderer;
+    </script>
 </head>
 <body id="page-info">
     <main class="info-content">
@@ -13,7 +18,10 @@
         <p>
           Welcome to the Johnson Pet App.<br>
           <strong>Version 1.0.0</strong><br>
-          <small>Built with love by <a href="https://debthecoderjohnson.com">Deb Johnson</a></small>
+          <small>Built with love by <a href="#" onclick="shell.openExternal('https://debthecoderjohnson.com')">Deb Johnson</a></small>
+        </p>
+        <p>
+            <a href="#" onclick="ipc.sendSync('closeInfoWindow')">Close Window</a>
         </p>
     </main>
 </body>
