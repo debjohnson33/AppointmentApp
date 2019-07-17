@@ -1,4 +1,5 @@
 var $ = jQuery = require('jquery');
+var _ = require('lodash');
 var bootstrap = require('bootstrap');
 var fs = eRequire('fs');
 var loadApts = JSON.parse(fs.readFileSync(dataLocation));
@@ -13,12 +14,24 @@ var MainInterface = React.createClass({
       myAppointments: loadApts
     }//return
   }, //getInitialState
+  deleteMessage: function(item) {
+    var allApts = this.state.myAppointments;
+    var newApts = _.without(allApts, item);
+    this.setState({
+        myAppointments: newApts
+    });
+  },
   render: function() {
     var myAppointments = this.state.myAppointments;
 
     myAppointments = myAppointments.map(function(item, index) {
         return(
-            <AptList key={index} singleItem={item} />
+            <AptList 
+                key={index} 
+                singleItem={item} 
+                whichItem={item}
+                onDelete={this.deleteMessage}
+            />
         )
     }.bind(this));
 
