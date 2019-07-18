@@ -4,9 +4,13 @@ var bootstrap = require('bootstrap');
 var fs = eRequire('fs');
 var loadApts = JSON.parse(fs.readFileSync(dataLocation));
 
+var electron = eRequire('electron');
+var ipc = electron.ipcRenderer;
+
 var React = require('react');
 var ReactDOM = require('react-dom');
 var AptList = require('./AptList');
+var Toolbar = require('./Toolbar');
 
 var MainInterface = React.createClass({
   getInitialState: function() {
@@ -22,6 +26,9 @@ var MainInterface = React.createClass({
             }
         }
     );
+  },
+  showAbout: function() {
+    ipc.sendSync('openInfoWindow');
   },
   deleteMessage: function(item) {
     var allApts = this.state.myAppointments;
@@ -47,14 +54,19 @@ var MainInterface = React.createClass({
     return(
 
       <div className="application">
-        <div className="container">
-         <div className="row">
-           <div className="appointments col-sm-12">
-             <h2 className="appointments-headline">Current Appointments</h2>
-             <ul className="item-list media-list">{myAppointments}</ul>
-           </div>{/* col-sm-12 */}
-         </div>{/* row */}
-        </div>{/* container */}
+        <div className="interface">
+            <Toolbar 
+                handleAbout={this.showAbout}
+            />
+            <div className="container">
+            <div className="row">
+            <div className="appointments col-sm-12">
+                <h2 className="appointments-headline">Current Appointments</h2>
+                <ul className="item-list media-list">{myAppointments}</ul>
+            </div>{/* col-sm-12 */}
+            </div>{/* row */}
+            </div>{/* container */}
+        </div>
       </div>
 
     );
