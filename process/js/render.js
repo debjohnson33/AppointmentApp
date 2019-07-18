@@ -38,6 +38,15 @@ var MainInterface = React.createClass({
   showAbout: function() {
     ipc.sendSync('openInfoWindow');
   },
+  addItem: function(tempItem) {
+      var tempApts = this.state.myAppointments;
+      tempApts.push(tempItem);
+      this.setState({
+          myAppointments: tempApts,
+          aptBodyVisible: false
+      })
+  }
+  ,
   deleteMessage: function(item) {
     var allApts = this.state.myAppointments;
     var newApts = _.without(allApts, item);
@@ -74,6 +83,7 @@ var MainInterface = React.createClass({
             />
             <AddAppointment
                 handleToggle = {this.toggleAptDisplay}
+                addApt = {this.addItem}
             />
             <div className="container">
             <div className="row">
