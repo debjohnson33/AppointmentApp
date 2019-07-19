@@ -1,7 +1,9 @@
 var electron = require('electron');
 var BrowserWindow = electron.BrowserWindow;
+var Menu = electron.Menu;
 var app = electron.app;
 var ipc = electron.ipcMain;
+var myAppMenu, menuTemplate;
 
 app.on('ready', function() {
   var appWindow, infoWindow;
@@ -34,4 +36,62 @@ app.on('ready', function() {
     event.returnValue='';
     infoWindow.hide();
   }); //closeInfoWindow
+
+  menuTemplate = [
+    {
+      label: 'Johnson Pet',
+      submenu: [
+        {
+          label: 'Add Appointment',
+          accelerator: process.platform === 'darwin' ? 'Command+N':'Ctrl+N',
+          click(item,focusedWindow) {
+            if (focusedWindow) focusedWindow.webContents.send('addAppointment');
+          }
+        },{
+          role: 'help',
+          label: 'Our Website',
+          click() { electron.shell.openExternal('https://debthecoderjohnson.com')}
+        },
+        {role: 'close'},
+        {role: 'quit'}
+      ]
+    },{
+      label: 'Edit',
+      submenu: [
+        {role: 'undo'},
+        {role: 'redo'},
+        {role: 'cut'},
+        {role: 'copy'},
+        {role: 'paste'},
+        {role: 'selectall'}
+      ]
+    },{
+        label: 'View',
+        submenu: [
+          {
+            label: 'Reload',
+            accelerator: 'CmdOrCtrl+R',
+            click (item, focusedWindow) {
+              if (focusedWindow) focusedWindow.reload()
+            }
+          },
+          {
+            label: 'Toggle Developer Tools',
+            accelerator: process.platform === 'darwin' ? 'Alt+Command+I' : 'Ctrl+Shift+I',
+            click (item, focusedWindow) {
+              if (focusedWindow) focusedWindow.webContents.toggleDevTools()
+            }
+          },
+          {type: 'separator'},
+          {role: 'resetzoom'},
+          {role: 'zoomin'},
+          {role: 'zoomout'},
+          {type: 'separator'},
+          {role: 'togglefullscreen'}
+        ]
+      },
+  ];
+
+  myAppMenu = Menu.buildFromTemplate(menuTemplate);
+  Menu.setApplicationMenu(myAppMenu);
 }); //app is ready
