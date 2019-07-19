@@ -1,5 +1,20 @@
 var React = require('react');
 
+var defaultDate = new Date();
+defaultDate.setDate(defaultDate.getDate() + 14);
+
+function formatDate(date, divider) {
+    var someday = new Date(date);
+    var month = someday.getUTCMonth() + 1;
+    var day = someday.getUTCDate();
+    var year = someday.getUTCFullYear();
+  
+    if (month <= 9) { month = '0' + month; }
+    if (day <= 9) { day = '0' + day; }
+  
+    return ('' + year + divider + month + divider + day);
+}
+
 var AddAppointment = React.createClass({
     toggleAptDisplay: function() {
         this.props.handleToggle();
@@ -14,6 +29,12 @@ var AddAppointment = React.createClass({
         }
 
         this.props.addApt(tempItem);
+        
+        this.inputPetName.value = '';
+        this.inputPetOwner.value = '';
+        this.inputAptDate.value = formatDate(defaultDate, '-');
+        this.inputAptTime.value = '09:00';
+        this.inputAptNotes = '';
     },
     render: function() {
         return(
@@ -43,14 +64,14 @@ var AddAppointment = React.createClass({
                   <div className="form-group">
                     <label className="col-sm-3 control-label" htmlFor="aptDate">Date</label>
                     <div className="col-sm-9">
-                      <input type="date" ref={(ref) => this.inputAptDate = ref} className="form-control"
+                      <input type="date" ref={(ref) => this.inputAptDate = ref} defaultValue={formatDate(defaultDate, '-')} className="form-control"
                         id="aptDate" />
                     </div>
                   </div>
                   <div className="form-group">
                     <label className="col-sm-3 control-label" htmlFor="aptTime">Time</label>
                     <div className="col-sm-9">
-                      <input type="time" ref={(ref) => this.inputAptTime = ref} className="form-control"
+                      <input type="time" ref={(ref) => this.inputAptTime = ref} defaultValue={'09:00'} className="form-control"
                         id="aptTime"/>
                     </div>
                   </div>
