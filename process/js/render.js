@@ -18,6 +18,8 @@ var MainInterface = React.createClass({
   getInitialState: function() {
     return {
       aptBodyVisible: false,
+      orderBy: 'petName',
+      orderDir: 'asc',
       queryText: '',
       myAppointments: loadApts
     }//return
@@ -56,6 +58,13 @@ var MainInterface = React.createClass({
         myAppointments: newApts
     });
   },
+
+  reOrder: function(orderBy, orderDir) {
+    this.setState({
+        orderBy: orderBy,
+        orderDir: orderDir
+    });
+  },
   searchApts: function(query) {
     this.setState({
         queryText: query
@@ -64,6 +73,8 @@ var MainInterface = React.createClass({
   render: function() {
     var filteredApts = [];
     var queryText = this.state.queryText;
+    var orderBy = this.state.orderBy;
+    var orderDir = this.state.orderDir;
     var myAppointments = this.state.myAppointments;
 
     for (var i = 0; i < myAppointments.length; i++) {
@@ -76,6 +87,10 @@ var MainInterface = React.createClass({
             filteredApts.push(myAppointments[i]);
           }
     }
+
+    filteredApts = _.orderBy(filteredApts, function(item) {
+        return item[orderBy].toLowerCase();
+    }, orderDir);
 
     if(this.state.aptBodyVisible === true) {
         $('#addAppointment').modal('show');
@@ -97,6 +112,9 @@ var MainInterface = React.createClass({
 
       <div className="application">
           <HeaderNav
+            orderBy={this.state.orderBy}
+            orderDir={this.state.orderDir}
+            onReOrder={this.reOrder}
             onSearch={this.searchApts}
           />
         <div className="interface">
