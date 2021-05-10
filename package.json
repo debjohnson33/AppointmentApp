@@ -20,7 +20,7 @@
     "dependencies": {
         "bootstrap": "^3.3.7",
         "electron-reload": "^1.0.2",
-        "lodash": "^4.17.19",
+        "lodash": "^4.17.21",
         "jquery": "^3.5.0"
     }
 }
